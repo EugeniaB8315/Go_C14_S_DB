@@ -3,7 +3,7 @@ package products
 import (
 	"context"
 
-	"github.com/aldogayaladh/go-web-1598/internal/domain"
+	"github.com/EugeniaB8315/Go_C14_S_DB/internal/domain"
 )
 
 type Repository interface {
