@@ -3,6 +3,7 @@ package products
 import (
 	"context"
 	"net/http"
+	"strconv"
 
 	"github.com/EugeniaB8315/Go_C14_S_DB/internal/domain"
 	"github.com/EugeniaB8315/Go_C14_S_DB/internal/products"
@@ -30,6 +31,7 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 				"message": "bad request",
 				"error":   err,
 			})
+			return
 		}
 
 		producto, err := c.service.Create(ctx, productRequest)
@@ -37,6 +39,7 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"message": "Internal server error",
 			})
+			return
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{
@@ -53,9 +56,11 @@ func (c *Controller) HandlerGetAll() gin.HandlerFunc {
 		newContext := addValueToContext(ctx)
 		listProducts, err := c.service.GetAll(newContext)
 		if err != nil {
+
 			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"message": "Internal server error",
 			})
+			return
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{
@@ -71,12 +76,22 @@ func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 		// Recuperamos el id de la request
 		idParam := ctx.Param("id")
 
+		id, err := strconv.Atoi(idParam)
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"message": "bad request",
+				"error":   err,
+			})
+			return
+		}
+
 		// Llamamos al servicio
-		producto, err := c.service.GetByID(ctx, idParam)
+		producto, err := c.service.GetByID(ctx, id)
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"message": "Internal server error",
 			})
+			return
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{
@@ -92,23 +107,34 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 		// Recuperamos el id de la request
 		idParam := ctx.Param("id")
 
+		id, err := strconv.Atoi(idParam)
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"message": "bad request",
+				"error":   err,
+			})
+			return
+		}
+
 		var productRequest domain.Producto
 
-		err := ctx.Bind(&productRequest)
+		err = ctx.Bind(&productRequest)
 
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 				"message": "bad request",
 				"error":   err,
 			})
+			return
 		}
 
 		// Llamamos al servicio
-		producto, err := c.service.Update(ctx, productRequest, idParam)
+		producto, err := c.service.Update(ctx, productRequest, id)
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"message": "Internal server error",
 			})
+			return
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{
@@ -124,12 +150,22 @@ func (c *Controller) HandlerDelete() gin.HandlerFunc {
 		// Recuperamos el id de la request
 		idParam := ctx.Param("id")
 
+		id, err := strconv.Atoi(idParam)
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"message": "bad request",
+				"error":   err,
+			})
+			return
+		}
+
 		// Llamamos al servicio
-		err := c.service.Delete(ctx, idParam)
+		err = c.service.Delete(ctx, id)
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"message": "Internal server error",
 			})
+			return
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{
