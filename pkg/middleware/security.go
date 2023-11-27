@@ -9,7 +9,9 @@ import (
 
 func Authenticate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		//trae el token de postman
 		tokenHeader := ctx.GetHeader("tokenPostman")
+		// trae token de .env variable de entorno
 		tokenEnv := os.Getenv("TOKEN")
 
 		if tokenHeader == "" || tokenHeader != tokenEnv {

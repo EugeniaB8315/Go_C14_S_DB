@@ -34,7 +34,7 @@ func (s *service) Create(ctx context.Context, producto domain.Producto) (domain.
 	return producto, nil
 }
 
-// GetAll ...
+// GetAll ...llama a la funcion desde el repositorio pasa un ctx retorna lista de producto
 func (s *service) GetAll(ctx context.Context) ([]domain.Producto, error) {
 	listProducts, err := s.repository.GetAll(ctx)
 	if err != nil {

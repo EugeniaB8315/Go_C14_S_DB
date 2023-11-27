@@ -22,7 +22,11 @@ func (w bodyLogWriter) Write(b []byte) (int, error) {
 	return w.ResponseWriter.Write(b)
 }
 
-/////////////////
+////crea la funcion logger de la siguiente manera
+// verbos :GET, POST, PUT,ETC
+//Fecha y hora: paquete time
+//URL de la consulta:  localhost:8080/api/v1/producto
+//tamaño en bytes
 
 func Logger() gin.HandlerFunc {
 	return func(ctx *gin.Context) {

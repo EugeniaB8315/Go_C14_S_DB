@@ -16,27 +16,33 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// @title   Ejemplo swagger
+// @version v1.0
+// @description "este es un ejemplo de swagger en main"
+
 func main() {
 
 	// Cargar las variables de entorno
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Carga la base de datos en memoria
-	//db := LoadStore()
-	db := connectDB()
+	db := LoadStore()
+	//db := connectDB()
 
 	// Ping.
 	controllerPing := handlerPing.NewControllerPing()
 
 	// Products.
-	//repostory := products.NewMemoryRepository(db)
-	repositoryMysl := products.NewMySqlRepository(db)
-	service := products.NewServiceProduct(repositoryMysl)
+	repository := products.NewMemoryRepository(db)
+	//repositoryMysl := products.NewMySqlRepository(db)
+	service := products.NewServiceProduct(repository)
 	controllerProduct := handlerProducto.NewControllerProducts(service)
 
+	//logger
 	engine := gin.New()
 	engine.Use(gin.Recovery())
 	engine.Use(middleware.Logger())

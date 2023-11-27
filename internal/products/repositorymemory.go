@@ -14,10 +14,11 @@ var (
 )
 
 type repository struct {
+	// es una slice de producto
 	db []domain.Producto
 }
 
-// NewMemoryRepository ....
+// NewMemoryRepository recibe un slice de producto y retorna un Repository
 func NewMemoryRepository(db []domain.Producto) Repository {
 	return &repository{db: db}
 }
@@ -47,6 +48,7 @@ func (r *repository) GetAll(ctx context.Context) ([]domain.Producto, error) {
 // GetByID .....
 func (r *repository) GetByID(ctx context.Context, id int) (domain.Producto, error) {
 	var result domain.Producto
+	//Busca el producto con el ID
 	for _, value := range r.db {
 		if value.Id == id {
 			result = value

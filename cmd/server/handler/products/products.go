@@ -49,7 +49,9 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 	}
 }
 
-// Doc ...
+// retorna una funcion controlador (handrer de gin)
+// no le pasa nada en parametro.
+
 func (c *Controller) HandlerGetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -77,6 +79,7 @@ func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 		idParam := ctx.Param("id")
 
 		id, err := strconv.Atoi(idParam)
+
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 				"message": "bad request",
